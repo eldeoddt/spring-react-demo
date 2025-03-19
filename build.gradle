@@ -1,0 +1,47 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.4.3'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.example'// 그룹 이름
+version = '0.0.1-SNAPSHOT' // 버전
+
+java { // 자바 버전 등 메타 데이터 포함.
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+configurations {
+	compileOnly { // 롬복이 동작하려면 annotationProcessor 가 필요함.
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories { //그래들이 라이브러리를 다운로드 하는 곳이다.
+	mavenCentral() // url로 여러 개 지정 가능.
+}
+
+dependencies { // 라이브러리 설정하는 항목.
+	// scope
+	// implementation: 구현(컴파일, 런타임, 테스트)에 필요.
+	// runtimeonly: 실행 시에만 필요
+	// comepileOnly: 컴파일 시에만 필요.
+	// testImplementation: 테스트 시에만 필요.
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web' // 이게 바로 url을 자바객체로 연결해준다.
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'com.h2database:h2'
+	annotationProcessor 'org.projectlombok:lombok' // annotationprocessor로 lombok 사용.
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	// https://mvnrepository.com/artifact/com.google.guava/guava
+	implementation group: 'com.google.guava', name: 'guava', version: '33.4.0-jre'
+}
+
+// test시에 junit을 사용한다.
+tasks.named('test') {// 단위 테스트 시 사용할 플랫폼을 지정한다.
+	useJUnitPlatform()
+}
