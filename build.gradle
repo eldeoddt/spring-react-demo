@@ -29,10 +29,10 @@ dependencies { // 라이브러리 설정하는 항목.
 	// runtimeonly: 실행 시에만 필요
 	// comepileOnly: 컴파일 시에만 필요.
 	// testImplementation: 테스트 시에만 필요.
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa' //jpa라이브러리.
 	implementation 'org.springframework.boot:spring-boot-starter-web' // 이게 바로 url을 자바객체로 연결해준다.
 	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'com.h2database:h2' // h2 database
 	annotationProcessor 'org.projectlombok:lombok' // annotationprocessor로 lombok 사용.
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'

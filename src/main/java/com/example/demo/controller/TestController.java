@@ -55,6 +55,7 @@ public class TestController {
         list.add("Hello world im a responseEntity");
         ResponseDTO<String> response = ResponseDTO.<String>builder().data(list).build();
 
-        return ResponseEntity.badRequest().body(response);
+//        return ResponseEntity.badRequest().body(response); // body에 response 지정함. badrequest는 400으로 코드를 지정한다. 코드를 지정할 때 사용한다.
+        return ResponseEntity.ok().body(response); // status code가 200으로 지정된다.
     }
 }
