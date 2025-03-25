@@ -22,4 +22,13 @@ public class TodoDTO { // 클라이언트한테 보낼 때 사용한다.
         this.title = entity.getTitle();
         this.done = entity.isDone();
     }
+
+    // todo dto를 todo entity로 변환한다.
+    public static TodoEntity toEntity(final TodoDTO dto) {
+        return TodoEntity.builder()
+                .id(dto.getId())
+                .title(dto.getTitle())
+                .done(dto.isDone())
+                .build();
+    }
 }
