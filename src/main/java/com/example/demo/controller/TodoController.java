@@ -39,7 +39,7 @@ public class TodoController {
             // entity list -> todo dto 로 변환
             List<TodoDTO> dtos = entities.stream().map(TodoDTO::new).collect(Collectors.toList());
 
-            // dto list로 responseDTO 초기화
+            // dto list로 responseDTO 초기화. 추가된후 todo 리스트를 반환한다.
             ResponseDTO<TodoDTO> response = ResponseDTO.<TodoDTO>builder().data(dtos).build();
 
             return ResponseEntity.ok().body(response);
@@ -67,6 +67,57 @@ public class TodoController {
         // responseDTO를 반환한다.
         return ResponseEntity.ok().body(response);
     }
+
+    @PutMapping // 수정 시 사용
+    public ResponseEntity<?> updateTodo(@RequestBody TodoDTO dto) {
+        String temporaryUserId = "temp-user";
+
+        // dto -> entity 로 변환
+        TodoEntity entity = TodoDTO.toEntity(dto);
+
+        // id를 임시 초기화
+        entity.setUserId(temporaryUserId);
+
+        // service.update로 엔티티 업데이트.
+        List<TodoEntity> entities = service.update(entity);
+
+        //자바 스트림을 이용하여 리턴된 엔티티 리스트를 todo dto 리스트로 변환.
+        List<TodoDTO> dtos = entities.stream().map(TodoDTO::new).collect(Collectors.toList());
+
+        // responsedto에 담음.
+        ResponseDTO<TodoDTO> response = ResponseDTO.<TodoDTO>builder().data(dtos).build();
+
+        return ResponseEntity.ok().body(response);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> deleteTodo(@RequestBody TodoDTO dto) {
+        try {
+            String temporaryUserId = "temp-user";
+
+            // dto -> entity 로 변환
+            TodoEntity entity = TodoDTO.toEntity(dto);
+
+            // id를 임시 초기화
+            entity.setUserId(temporaryUserId);
+
+            // service.delete로 엔티티 삭제하기
+            List<TodoEntity> entities = service.delete(entity);
+
+            //자바 스트림을 이용하여 리턴된 엔티티 리스트를 todo dto 리스트로 변환.
+            List<TodoDTO> dtos = entities.stream().map(TodoDTO::new).collect(Collectors.toList());
+
+            // responsedto에 담음.
+            ResponseDTO<TodoDTO> response = ResponseDTO.<TodoDTO>builder().data(dtos).build();
+
+            return ResponseEntity.ok().body(response);
+        } catch (Exception e) {
+            String error = e.getMessage();
+            ResponseDTO<TodoDTO> response = ResponseDTO.<TodoDTO>builder().error(error).build();
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
 
     @GetMapping("/test")
     public ResponseEntity<?> testTodo() {
