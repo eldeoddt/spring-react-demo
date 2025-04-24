@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.ResponseDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.model.UserEntity;
+import com.example.demo.security.TokenProvider;
 import com.example.demo.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TokenProvider tokenProvider;
 
     /**
      * 회원가입 sign up 메서드
@@ -57,6 +61,8 @@ public class UserController {
 
     /**
      * 로그인 sign in 메서드
+     * @param userDTO
+     * @return 토큰을 포함한 userDTO
      */
     @PostMapping("/signin")
     public ResponseEntity<?> authenticate(@RequestBody UserDTO userDTO) {
@@ -67,9 +73,12 @@ public class UserController {
 
         // user가 null이 아닌 경우. user를 찾은 경우. user dto 를 생성한다.
         if (user != null) {
+            // jwt 생성
+            final String token = tokenProvider.create(user);
             final UserDTO responseUserDTO = UserDTO.builder()
                     .username(user.getUsername())
                     .id(user.getId())
+                    .token(token)
                     .build();
             return ResponseEntity.ok().body(responseUserDTO);
         } else {

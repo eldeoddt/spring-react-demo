@@ -39,6 +39,12 @@ dependencies { // 라이브러리 설정하는 항목.
 
 	// https://mvnrepository.com/artifact/com.google.guava/guava
 	implementation group: 'com.google.guava', name: 'guava', version: '33.4.0-jre'
+
+	// jjwt
+	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+
+	implementation 'javax.xml.bind:jaxb-api:2.3.1'
+	implementation 'org.springframework.book:spring-boot-starter-security'
 }
 
 // test시에 junit을 사용한다.
