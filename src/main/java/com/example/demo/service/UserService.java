@@ -37,15 +37,24 @@ public class UserService {
         return userRepository.save(userEntity);
     }
 
+    /**
+     * 입력한 사용자 정보가 db와 일치한지 확인합니다.
+     * @param username
+     * @param password
+     * @param encoder BCryptPasswordEncoder 객체를 받는다.
+     * @return user entity
+     */
     // username, password로 유저 엔티티. 사용자 정보를 가져온다.
     public UserEntity getByCredentials(
             final String username,
             final String password,
             final PasswordEncoder encoder) {
+        // findByUsername()으로 db에서 일치하는 User entity를 얻어온다.
         final UserEntity originalUser = userRepository.findByUsername(username);
 
-        if(originalUser != null && encoder.matches(
-                password, originalUser.getPassword())) {
+        // pw 인코더(복호화)를 사용하여 입력한 값과 db의 값이 일치한지 검사한다.
+        if(originalUser != null &&
+                encoder.matches(password, originalUser.getPassword())) {
             return originalUser;
         }
         return null;

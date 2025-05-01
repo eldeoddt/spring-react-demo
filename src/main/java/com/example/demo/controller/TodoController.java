@@ -23,6 +23,7 @@ public class TodoController {
 
     // todo dto 입력 받기
     @PostMapping
+    // @AuthenticationPrincipal : 첫번째 인자값 = userId값이 자동으로 전달된다.
     public ResponseEntity<?> createTodo(@AuthenticationPrincipal String userId,
                                         @RequestBody TodoDTO dto) {
         try {
@@ -31,7 +32,7 @@ public class TodoController {
 
             entity.setId(null);
 
-            // Authentication Bearer token으로 받은 userId를 지정한다.
+            // Authentication Bearer token - @AuthenticationPrincipal로 받은 userId를 지정한다.
             entity.setUserId(userId);
 
             // enitity 생성
